@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html ng-app="discovererApp">
+<head>
+	<title> Smart Discover </title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<!-- SPELLS <div style="border: 2px solid;border-radius: 10px;">-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery --
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script><!-- load angular --
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script> <!-- include routes -->
+	<script src='js/angular.js'></script>
+	<script src='js/angular-route.js'></script>
+	<script src="js/ng-tags-input.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/ng-tags-input.css">
+	<link rel="stylesheet" href="css/ng-tags-input.bootstrap.css">
+
+   
+</head>
+<body ><div class="container">
+
+	<h1></h1>
+	<div class="row">
+
+
+		<!-- Search bar -->
+		<form ng-submit="search()" ng-controller="search_controller">
+			<table style='width:100%' >
+				<tr>
+					<h3>Discover:</h3>
+				</tr>
+				
+				<tr>
+					<span class="glyphicon glyphicon-search" aria-hidden="true"> </span> &nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" ng-model="formData.seed_site" placeholder="An Example Site's URL e.g. http://blog.dianpelangi.com" class="form-control input"/> 
+
+				</tr>
+				<tr >
+					<input type="number" ng-model="formData.limit" placeholder="Search Limit (Default 50)" class="form-control input"/>
+				</tr>
+				<tr >
+					<tags-input ng-model="formData.search_tags" placeholder="Enter in relevant tags" class="ti-input"/>
+				</tr>
+				
+				<tr>
+					<input type="submit" id="submit" value="Submit" />
+				</tr>
+			</table>
+		</form>
+		<!-- SHOW DATA FROM INPUTS AS THEY ARE BEING TYPED -->
+		<pre>
+		    {{ formData }}
+		</pre>
+		<!-- Content list/view when open-->
+		<table style='width:100%' ng-controller="content_list_controller">
+			<tr ng-repeat="content in content_list" style='width:100%'>
+				<td >
+					TODO: IMG FOUND
+					
+				</td>
+			</tr>	
+		</table>
+
+		
+
+		
+	</div>
+
+
+	<script>
+		var app = angular.module('discovererApp', ['ngRoute', 'ngTagsInput']);
+ 
+		app.controller('content_list_controller', function($scope){
+			$scope.content_list=[
+				{'file':'maeda'}, 
+				{'file':'adam'}, 
+				{'file':'idris'}, 
+				{'file':'aysha'},
+				{'file':'sakinah'},
+				{'file':'luqman'}
+			];
+			console.log('Show list of the content');
+
+			
+		});
+
+		app.controller('search_controller', function($scope, $http){
+			$scope.formData = {};
+
+			// Search
+			$scope.search = function() {
+				$http.post('search', $scope.formData)
+				.success(function(data) {
+					console.log(data);
+
+					if (!data.success) {
+						// if not successful, bind errors to error variables
+						//$scope.errorName = data.errors.name;
+						//$scope.errorSuperhero = data.errors.superheroAlias;
+						console.log(data)
+					} else {
+						// if successful, bind success message to message
+						//$scope.message = data.message;
+					}
+				});
+			};
+		});
+
+		
+	</script>
+ 	<style>
+ 		/* "auto" makes the left and right margins center the wrapper */
+		#wrap { 
+			width: 900px; 
+			margin: 0 auto; 
+		}
+ 	</style>
+</div></body>
